@@ -1,24 +1,51 @@
-# 🌦️ IMD Metro Air Quality Forecast Tracker (Daily Automated Scraper)
+# 🌦️ IMD Metro Air Quality Forecast Tracker (Hourly + Official Daily AQI)
 *Automated daily air quality forecast monitoring across India's top 6 metropolitan cities.*
 
-**Data Source:** [India Meteorological Department (IMD) NWP Portal](https://nwp.imd.gov.in/aqfcst1.php)  
+**Data Source:** [India Meteorological Department (IMD) NWP Portal](https://nwp.imd.gov.in/aqfcst1.php) -> SILAM Engine  
 **Cities Monitored:** Delhi, Mumbai, Hyderabad, Bengaluru, Kolkata, Chennai  
 **Run Frequency:** Daily at **08:00 AM IST** (`02:30 UTC`) via GitHub Actions  
 
 ---
 
-## 📊 Live Google Sheets Integration (No Coding Required)
+## 📊 Live Google Sheets Integration (Direct One-Click Links)
 
-Any researcher on your team can view this live dataset directly inside an empty Google Sheet without downloading anything:
+Researchers can paste any of the formulas below directly into cell **A1** of a Google Sheet tab:
 
-1. Open a new Google Sheet.
-2. In cell **A1**, paste this formula (replace `<YOUR-USERNAME>` and `<REPO-NAME>`):
+### 1. Dedicated Per-City Tabs (Clean Separation)
+* **Delhi Tab:**
+  ```excel
+  =IMPORTDATA("https://raw.githubusercontent.com/mrafiuddin50/imd-metro-aqi-forecast/main/data/cities/delhi_hourly.csv")
+  ```
+* **Mumbai Tab:**
+  ```excel
+  =IMPORTDATA("https://raw.githubusercontent.com/mrafiuddin50/imd-metro-aqi-forecast/main/data/cities/mumbai_hourly.csv")
+  ```
+* **Hyderabad Tab:**
+  ```excel
+  =IMPORTDATA("https://raw.githubusercontent.com/mrafiuddin50/imd-metro-aqi-forecast/main/data/cities/hyderabad_hourly.csv")
+  ```
+* **Bengaluru Tab:**
+  ```excel
+  =IMPORTDATA("https://raw.githubusercontent.com/mrafiuddin50/imd-metro-aqi-forecast/main/data/cities/bengaluru_hourly.csv")
+  ```
+* **Kolkata Tab:**
+  ```excel
+  =IMPORTDATA("https://raw.githubusercontent.com/mrafiuddin50/imd-metro-aqi-forecast/main/data/cities/kolkata_hourly.csv")
+  ```
+* **Chennai Tab:**
+  ```excel
+  =IMPORTDATA("https://raw.githubusercontent.com/mrafiuddin50/imd-metro-aqi-forecast/main/data/cities/chennai_hourly.csv")
+  ```
 
-```excel
-=IMPORTDATA("https://raw.githubusercontent.com/<YOUR-USERNAME>/<REPO-NAME>/main/data/imd_forecast_history.csv")
-```
-
-Every morning after 8:00 AM IST when GitHub Actions runs, your Google Sheet will automatically refresh with the latest forecast data.
+### 2. High-Level Summary Tabs
+* **Daily Official AQI Summary (All 6 Cities):**
+  ```excel
+  =IMPORTDATA("https://raw.githubusercontent.com/mrafiuddin50/imd-metro-aqi-forecast/main/data/daily_official_aqi_summary.csv")
+  ```
+* **Master Hourly Panel (All 6 Cities Combined):**
+  ```excel
+  =IMPORTDATA("https://raw.githubusercontent.com/mrafiuddin50/imd-metro-aqi-forecast/main/data/master_all_cities_hourly.csv")
+  ```
 
 ---
 
@@ -28,46 +55,51 @@ Every morning after 8:00 AM IST when GitHub Actions runs, your Google Sheet will
 .
 ├── .github/
 │   └── workflows/
-│       └── daily_scrape.yml       # GitHub Actions schedule (08:00 AM IST)
+│       └── daily_scrape.yml           # Runs daily at 08:00 AM IST
 ├── scripts/
-│   └── imd_scraper.py             # Multi-city scraping script (requests + bs4)
+│   └── imd_scraper.py                 # Multi-city hourly & daily AQI engine
 ├── data/
-│   ├── imd_forecast_history.csv   # Cumulative historical time series
-│   └── latest_snapshot.json       # Today's 6-city snapshot in JSON
-├── requirements.txt               # Python package dependencies
-├── scraper.log                    # Run audit logs
+│   ├── cities/                        # Clean per-city separation
+│   │   ├── delhi_hourly.csv           # Hourly PM2.5, PM10 & official daily AQI
+│   │   ├── mumbai_hourly.csv
+│   │   ├── hyderabad_hourly.csv
+│   │   ├── bengaluru_hourly.csv
+│   │   ├── kolkata_hourly.csv
+│   │   └── chennai_hourly.csv
+│   ├── daily_official_aqi_summary.csv # Pure official AQI gauges directly from IMD
+│   ├── master_all_cities_hourly.csv   # Combined 6-city hourly dataset for modeling
+│   └── latest_snapshot.json           # Lightweight JSON snapshot
+├── requirements.txt                   # requests, beautifulsoup4, urllib3
+├── scraper.log                        # Execution audit logs
 └── README.md
 ```
 
 ---
 
-## 📋 Data Dictionary (`data/imd_forecast_history.csv`)
+## 📋 Data Dictionary
 
-| Field | Type | Description |
+### Hourly Datasets (`data/cities/<city>_hourly.csv`)
+
+| Field | Example | Description |
 | :--- | :--- | :--- |
-| `scraped_at_ist` | Timestamp | Date and time the scraper ran (IST) |
-| `city` | Text | City queried (`Delhi`, `Mumbai`, `Hyderabad`, `Bengaluru`, `Kolkata`, `Chennai`) |
-| `forecast_date` | Date/Text | Target date for which the forecast is issued |
-| `parameter` | Text | Pollutant or meteorological indicator (e.g. `PM2.5`) |
-| `forecast_value` | Number/Text | Forecasted concentration or index value |
-| `unit` | Text | Unit of measurement (e.g., `µg/m³`) |
-| `status` | Text | `SUCCESS` or error audit status |
+| `forecast_timestamp` | `2026-11-10 14:00:00` | Hourly forecast time |
+| `city` | `Delhi` | City name |
+| `pm25_hourly` | `170.0` | Hourly $\text{PM}_{2.5}$ ($\mu\text{g/m}^3$) directly from plot |
+| `pm10_hourly` | `224.5` | Hourly $\text{PM}_{10}$ ($\mu\text{g/m}^3$) directly from plot |
+| `official_daily_aqi` | `617` | **Official IMD AQI directly from the gauge below the plot** |
+| `dominating_pollutant` | `PM2_5` | Official dominating pollutant reported by IMD |
+| `aqi_category` | `Severe` | CPCB rating category for the official AQI |
+| `scraped_at_ist` | `2026-11-10 14:42:01` | Execution timestamp in IST |
 
 ---
 
-## ⚙️ Initial 3-Minute GitHub Setup
+### Daily AQI Summary (`data/daily_official_aqi_summary.csv`)
 
-### 1. Enable Workflow Write Permissions
-In order for GitHub Actions to automatically commit the updated CSV back to your repository:
-1. In this repo, click **Settings** (top tab).
-2. In the left sidebar, click **Actions** $\rightarrow$ **General**.
-3. Scroll down to **Workflow permissions**.
-4. Select **Read and write permissions**.
-5. Click **Save**.
-
-### 2. Manual Test Run
-You can trigger the scraper immediately without waiting for 8:00 AM:
-1. Click the **Actions** tab at the top.
-2. Click **Daily IMD Metro Air Quality Forecast Scraper** in the left menu.
-3. Click the **Run workflow** dropdown on the right $\rightarrow$ click the green **Run workflow** button.
-4. Refresh after ~30 seconds to see the new data populated under `data/imd_forecast_history.csv`!
+| Field | Example | Description |
+| :--- | :--- | :--- |
+| `scraped_at_ist` | `2026-11-10 14:42:01` | Execution timestamp in IST |
+| `city` | `Delhi` | City name |
+| `forecast_date` | `2026-11-10 11:00:00` | Target forecast date and time |
+| `official_aqi` | `617` | **Exact AQI value from the IMD gauge below plot** |
+| `dominating_pollutant` | `PM2_5` | Dominating pollutant from IMD gauge |
+| `aqi_category` | `Severe` | Official category |

@@ -41,8 +41,8 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           
-          # Add CSV and JSON files
-          git add data/imd_forecast_history.csv data/latest_snapshot.json scraper.log
+          # Add all city files, master hourly dataset, daily summary, and logs
+          git add data/ scraper.log
           
           # Commit only if files have changed
           git commit -m "Auto-update IMD metro forecasts [$(date -u +'%Y-%m-%d %H:%M UTC')]" || echo "No changes to commit"
