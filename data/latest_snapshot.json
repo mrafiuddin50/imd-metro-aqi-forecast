@@ -1,0 +1,218 @@
+[
+  {
+    "scraped_at_ist": "2026-11-10 14:42:01",
+    "city": "Delhi",
+    "forecast_date": "2026-11-08 11:00:00",
+    "forecast_aqi": 227,
+    "dominating_pollutant": "PM2_5",
+    "aqi_category": "Poor",
+    "status": "SUCCESS"
+  },
+  {
+    "scraped_at_ist": "2026-11-10 14:42:01",
+    "city": "Delhi",
+    "forecast_date": "2026-11-09 11:00:00",
+    "forecast_aqi": 395,
+    "dominating_pollutant": "PM2_5",
+    "aqi_category": "Very Poor",
+    "status": "SUCCESS"
+  },
+  {
+    "scraped_at_ist": "2026-11-10 14:42:01",
+    "city": "Delhi",
+    "forecast_date": "2026-11-10 11:00:00",
+    "forecast_aqi": 617,
+    "dominating_pollutant": "PM2_5",
+    "aqi_category": "Severe",
+    "status": "SUCCESS"
+  },
+  {
+    "scraped_at_ist": "2026-11-10 14:42:01",
+    "city": "Delhi",
+    "forecast_date": "2026-11-11 11:00:00",
+    "forecast_aqi": 459,
+    "dominating_pollutant": "PM2_5",
+    "aqi_category": "Severe",
+    "status": "SUCCESS"
+  },
+  {
+    "scraped_at_ist": "2026-11-10 14:42:02",
+    "city": "Mumbai",
+    "forecast_date": "2026-11-08 11:00:00",
+    "forecast_aqi": 149,
+    "dominating_pollutant": "PM2_5",
+    "aqi_category": "Moderate",
+    "status": "SUCCESS"
+  },
+  {
+    "scraped_at_ist": "2026-11-10 14:42:02",
+    "city": "Mumbai",
+    "forecast_date": "2026-11-09 11:00:00",
+    "forecast_aqi": 132,
+    "dominating_pollutant": "PM2_5",
+    "aqi_category": "Moderate",
+    "status": "SUCCESS"
+  },
+  {
+    "scraped_at_ist": "2026-11-10 14:42:02",
+    "city": "Mumbai",
+    "forecast_date": "2026-11-10 11:00:00",
+    "forecast_aqi": 142,
+    "dominating_pollutant": "PM2_5",
+    "aqi_category": "Moderate",
+    "status": "SUCCESS"
+  },
+  {
+    "scraped_at_ist": "2026-11-10 14:42:02",
+    "city": "Mumbai",
+    "forecast_date": "2026-11-11 11:00:00",
+    "forecast_aqi": 200,
+    "dominating_pollutant": "PM2_5",
+    "aqi_category": "Moderate",
+    "status": "SUCCESS"
+  },
+  {
+    "scraped_at_ist": "2026-11-10 14:42:03",
+    "city": "Hyderabad",
+    "forecast_date": "2026-11-08 11:00:00",
+    "forecast_aqi": 141,
+    "dominating_pollutant": "PM2_5",
+    "aqi_category": "Moderate",
+    "status": "SUCCESS"
+  },
+  {
+    "scraped_at_ist": "2026-11-10 14:42:03",
+    "city": "Hyderabad",
+    "forecast_date": "2026-11-09 11:00:00",
+    "forecast_aqi": 103,
+    "dominating_pollutant": "PM2_5",
+    "aqi_category": "Moderate",
+    "status": "SUCCESS"
+  },
+  {
+    "scraped_at_ist": "2026-11-10 14:42:03",
+    "city": "Hyderabad",
+    "forecast_date": "2026-11-10 11:00:00",
+    "forecast_aqi": 119,
+    "dominating_pollutant": "PM2_5",
+    "aqi_category": "Moderate",
+    "status": "SUCCESS"
+  },
+  {
+    "scraped_at_ist": "2026-11-10 14:42:03",
+    "city": "Hyderabad",
+    "forecast_date": "2026-11-11 11:00:00",
+    "forecast_aqi": 203,
+    "dominating_pollutant": "PM2_5",
+    "aqi_category": "Poor",
+    "status": "SUCCESS"
+  },
+  {
+    "scraped_at_ist": "2026-11-10 14:42:05",
+    "city": "Bengaluru",
+    "forecast_date": "2024-12-24 11:00:00",
+    "forecast_aqi": 74,
+    "dominating_pollutant": "O3",
+    "aqi_category": "Satisfactory",
+    "status": "SUCCESS"
+  },
+  {
+    "scraped_at_ist": "2026-11-10 14:42:05",
+    "city": "Bengaluru",
+    "forecast_date": "2024-12-25 11:00:00",
+    "forecast_aqi": 56,
+    "dominating_pollutant": "O3",
+    "aqi_category": "Satisfactory",
+    "status": "SUCCESS"
+  },
+  {
+    "scraped_at_ist": "2026-11-10 14:42:05",
+    "city": "Bengaluru",
+    "forecast_date": "2024-12-26 11:00:00",
+    "forecast_aqi": 39,
+    "dominating_pollutant": "O3",
+    "aqi_category": "Good",
+    "status": "SUCCESS"
+  },
+  {
+    "scraped_at_ist": "2026-11-10 14:42:05",
+    "city": "Bengaluru",
+    "forecast_date": "2024-12-31 11:00:00",
+    "forecast_aqi": 62,
+    "dominating_pollutant": "O3",
+    "aqi_category": "Satisfactory",
+    "status": "SUCCESS"
+  },
+  {
+    "scraped_at_ist": "2026-11-10 14:42:06",
+    "city": "Kolkata",
+    "forecast_date": "2026-11-08 11:00:00",
+    "forecast_aqi": 343,
+    "dominating_pollutant": "PM2_5",
+    "aqi_category": "Very Poor",
+    "status": "SUCCESS"
+  },
+  {
+    "scraped_at_ist": "2026-11-10 14:42:06",
+    "city": "Kolkata",
+    "forecast_date": "2026-11-09 11:00:00",
+    "forecast_aqi": 349,
+    "dominating_pollutant": "PM2_5",
+    "aqi_category": "Very Poor",
+    "status": "SUCCESS"
+  },
+  {
+    "scraped_at_ist": "2026-11-10 14:42:06",
+    "city": "Kolkata",
+    "forecast_date": "2026-11-10 11:00:00",
+    "forecast_aqi": 330,
+    "dominating_pollutant": "PM2_5",
+    "aqi_category": "Very Poor",
+    "status": "SUCCESS"
+  },
+  {
+    "scraped_at_ist": "2026-11-10 14:42:06",
+    "city": "Kolkata",
+    "forecast_date": "2026-11-11 11:00:00",
+    "forecast_aqi": 231,
+    "dominating_pollutant": "PM2_5",
+    "aqi_category": "Poor",
+    "status": "SUCCESS"
+  },
+  {
+    "scraped_at_ist": "2026-11-10 14:42:08",
+    "city": "Chennai",
+    "forecast_date": "2026-11-08 11:00:00",
+    "forecast_aqi": 203,
+    "dominating_pollutant": "PM2_5",
+    "aqi_category": "Poor",
+    "status": "SUCCESS"
+  },
+  {
+    "scraped_at_ist": "2026-11-10 14:42:08",
+    "city": "Chennai",
+    "forecast_date": "2026-11-09 11:00:00",
+    "forecast_aqi": 228,
+    "dominating_pollutant": "PM2_5",
+    "aqi_category": "Poor",
+    "status": "SUCCESS"
+  },
+  {
+    "scraped_at_ist": "2026-11-10 14:42:08",
+    "city": "Chennai",
+    "forecast_date": "2026-11-10 11:00:00",
+    "forecast_aqi": 85,
+    "dominating_pollutant": "PM2_5",
+    "aqi_category": "Satisfactory",
+    "status": "SUCCESS"
+  },
+  {
+    "scraped_at_ist": "2026-11-10 14:42:08",
+    "city": "Chennai",
+    "forecast_date": "2026-11-11 11:00:00",
+    "forecast_aqi": 56,
+    "dominating_pollutant": "SO2",
+    "aqi_category": "Satisfactory",
+    "status": "SUCCESS"
+  }
+]

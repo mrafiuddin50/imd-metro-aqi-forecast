@@ -1,0 +1,49 @@
+name: Daily IMD Metro Air Quality Forecast Scraper
+
+on:
+  schedule:
+    # 02:30 UTC = 08:00 AM IST (Indian Standard Time = UTC + 5:30)
+    - cron: '30 2 * * *'
+  
+  # Enables manual trigger from GitHub UI anytime ("Run workflow" button)
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  scrape-and-commit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run Scraper
+        run: |
+          python scripts/imd_scraper.py
+
+      - name: Commit and Push Updated Data
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          
+          # Add CSV and JSON files
+          git add data/imd_forecast_history.csv data/latest_snapshot.json scraper.log
+          
+          # Commit only if files have changed
+          git commit -m "Auto-update IMD metro forecasts [$(date -u +'%Y-%m-%d %H:%M UTC')]" || echo "No changes to commit"
+          git push
