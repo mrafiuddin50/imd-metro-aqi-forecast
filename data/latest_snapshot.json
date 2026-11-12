@@ -1,5 +1,5 @@
 {
-  "updated_at_ist": "2026-11-12 10:41:40",
+  "updated_at_ist": "2026-11-12 10:47:24",
   "cities": [
     "Delhi",
     "Mumbai",
@@ -10,7 +10,7 @@
   ],
   "daily_official_gauges": [
     {
-      "scraped_at_ist": "2026-11-12 10:41:40",
+      "scraped_at_ist": "2026-11-12 10:47:24",
       "city": "Delhi",
       "forecast_date": "2026-11-11 11:00:00",
       "official_aqi": 500,
@@ -18,7 +18,7 @@
       "aqi_category": "Severe"
     },
     {
-      "scraped_at_ist": "2026-11-12 10:41:40",
+      "scraped_at_ist": "2026-11-12 10:47:24",
       "city": "Delhi",
       "forecast_date": "2026-11-12 11:00:00",
       "official_aqi": 191,
@@ -26,7 +26,7 @@
       "aqi_category": "Moderate"
     },
     {
-      "scraped_at_ist": "2026-11-12 10:41:40",
+      "scraped_at_ist": "2026-11-12 10:47:24",
       "city": "Delhi",
       "forecast_date": "2026-11-13 11:00:00",
       "official_aqi": 147,
@@ -34,7 +34,7 @@
       "aqi_category": "Moderate"
     },
     {
-      "scraped_at_ist": "2026-11-12 10:41:40",
+      "scraped_at_ist": "2026-11-12 10:47:24",
       "city": "Delhi",
       "forecast_date": "2026-11-14 11:00:00",
       "official_aqi": 173,
@@ -42,7 +42,7 @@
       "aqi_category": "Moderate"
     },
     {
-      "scraped_at_ist": "2026-11-12 10:41:42",
+      "scraped_at_ist": "2026-11-12 10:47:28",
       "city": "Mumbai",
       "forecast_date": "2026-11-11 11:00:00",
       "official_aqi": 259,
@@ -50,7 +50,7 @@
       "aqi_category": "Poor"
     },
     {
-      "scraped_at_ist": "2026-11-12 10:41:42",
+      "scraped_at_ist": "2026-11-12 10:47:28",
       "city": "Mumbai",
       "forecast_date": "2026-11-12 11:00:00",
       "official_aqi": 297,
@@ -58,7 +58,7 @@
       "aqi_category": "Poor"
     },
     {
-      "scraped_at_ist": "2026-11-12 10:41:42",
+      "scraped_at_ist": "2026-11-12 10:47:28",
       "city": "Mumbai",
       "forecast_date": "2026-11-13 11:00:00",
       "official_aqi": 329,
@@ -66,7 +66,7 @@
       "aqi_category": "Very Poor"
     },
     {
-      "scraped_at_ist": "2026-11-12 10:41:42",
+      "scraped_at_ist": "2026-11-12 10:47:28",
       "city": "Mumbai",
       "forecast_date": "2026-11-14 11:00:00",
       "official_aqi": 349,
@@ -74,7 +74,7 @@
       "aqi_category": "Very Poor"
     },
     {
-      "scraped_at_ist": "2026-11-12 10:41:44",
+      "scraped_at_ist": "2026-11-12 10:47:30",
       "city": "Hyderabad",
       "forecast_date": "2026-11-11 11:00:00",
       "official_aqi": 174,
@@ -82,7 +82,7 @@
       "aqi_category": "Moderate"
     },
     {
-      "scraped_at_ist": "2026-11-12 10:41:44",
+      "scraped_at_ist": "2026-11-12 10:47:30",
       "city": "Hyderabad",
       "forecast_date": "2026-11-12 11:00:00",
       "official_aqi": 147,
@@ -90,7 +90,7 @@
       "aqi_category": "Moderate"
     },
     {
-      "scraped_at_ist": "2026-11-12 10:41:44",
+      "scraped_at_ist": "2026-11-12 10:47:30",
       "city": "Hyderabad",
       "forecast_date": "2026-11-13 11:00:00",
       "official_aqi": 350,
@@ -98,7 +98,7 @@
       "aqi_category": "Very Poor"
     },
     {
-      "scraped_at_ist": "2026-11-12 10:41:44",
+      "scraped_at_ist": "2026-11-12 10:47:30",
       "city": "Hyderabad",
       "forecast_date": "2026-11-14 11:00:00",
       "official_aqi": 296,
@@ -106,7 +106,7 @@
       "aqi_category": "Poor"
     },
     {
-      "scraped_at_ist": "2026-11-12 10:41:45",
+      "scraped_at_ist": "2026-11-12 10:47:31",
       "city": "Bengaluru",
       "forecast_date": "2024-12-24 11:00:00",
       "official_aqi": 74,
@@ -114,7 +114,7 @@
       "aqi_category": "Satisfactory"
     },
     {
-      "scraped_at_ist": "2026-11-12 10:41:45",
+      "scraped_at_ist": "2026-11-12 10:47:31",
       "city": "Bengaluru",
       "forecast_date": "2024-12-25 11:00:00",
       "official_aqi": 56,
@@ -122,7 +122,7 @@
       "aqi_category": "Satisfactory"
     },
     {
-      "scraped_at_ist": "2026-11-12 10:41:45",
+      "scraped_at_ist": "2026-11-12 10:47:31",
       "city": "Bengaluru",
       "forecast_date": "2024-12-26 11:00:00",
       "official_aqi": 39,
@@ -130,7 +130,7 @@
       "aqi_category": "Good"
     },
     {
-      "scraped_at_ist": "2026-11-12 10:41:45",
+      "scraped_at_ist": "2026-11-12 10:47:31",
       "city": "Bengaluru",
       "forecast_date": "2024-12-31 11:00:00",
       "official_aqi": 62,
@@ -138,7 +138,7 @@
       "aqi_category": "Satisfactory"
     },
     {
-      "scraped_at_ist": "2026-11-12 10:41:47",
+      "scraped_at_ist": "2026-11-12 10:47:33",
       "city": "Kolkata",
       "forecast_date": "2026-11-11 11:00:00",
       "official_aqi": 392,
@@ -146,7 +146,7 @@
       "aqi_category": "Very Poor"
     },
     {
-      "scraped_at_ist": "2026-11-12 10:41:47",
+      "scraped_at_ist": "2026-11-12 10:47:33",
       "city": "Kolkata",
       "forecast_date": "2026-11-12 11:00:00",
       "official_aqi": 593,
@@ -154,7 +154,7 @@
       "aqi_category": "Severe"
     },
     {
-      "scraped_at_ist": "2026-11-12 10:41:47",
+      "scraped_at_ist": "2026-11-12 10:47:33",
       "city": "Kolkata",
       "forecast_date": "2026-11-13 11:00:00",
       "official_aqi": 403,
@@ -162,7 +162,7 @@
       "aqi_category": "Severe"
     },
     {
-      "scraped_at_ist": "2026-11-12 10:41:47",
+      "scraped_at_ist": "2026-11-12 10:47:33",
       "city": "Kolkata",
       "forecast_date": "2026-11-14 11:00:00",
       "official_aqi": 462,
@@ -170,7 +170,7 @@
       "aqi_category": "Severe"
     },
     {
-      "scraped_at_ist": "2026-11-12 10:41:48",
+      "scraped_at_ist": "2026-11-12 10:47:35",
       "city": "Chennai",
       "forecast_date": "2026-11-11 11:00:00",
       "official_aqi": 180,
@@ -178,7 +178,7 @@
       "aqi_category": "Moderate"
     },
     {
-      "scraped_at_ist": "2026-11-12 10:41:48",
+      "scraped_at_ist": "2026-11-12 10:47:35",
       "city": "Chennai",
       "forecast_date": "2026-11-12 11:00:00",
       "official_aqi": 68,
@@ -186,7 +186,7 @@
       "aqi_category": "Satisfactory"
     },
     {
-      "scraped_at_ist": "2026-11-12 10:41:48",
+      "scraped_at_ist": "2026-11-12 10:47:35",
       "city": "Chennai",
       "forecast_date": "2026-11-13 11:00:00",
       "official_aqi": 52,
@@ -194,7 +194,7 @@
       "aqi_category": "Satisfactory"
     },
     {
-      "scraped_at_ist": "2026-11-12 10:41:48",
+      "scraped_at_ist": "2026-11-12 10:47:35",
       "city": "Chennai",
       "forecast_date": "2026-11-14 11:00:00",
       "official_aqi": 42,
@@ -211,7 +211,7 @@
       "official_daily_aqi": 500,
       "dominating_pollutant": "PM2_5",
       "aqi_category": "Severe",
-      "scraped_at_ist": "2026-11-12 10:41:40"
+      "scraped_at_ist": "2026-11-12 10:47:24"
     },
     {
       "forecast_timestamp": "2026-11-11 02:00:00",
@@ -221,7 +221,7 @@
       "official_daily_aqi": 500,
       "dominating_pollutant": "PM2_5",
       "aqi_category": "Severe",
-      "scraped_at_ist": "2026-11-12 10:41:40"
+      "scraped_at_ist": "2026-11-12 10:47:24"
     },
     {
       "forecast_timestamp": "2026-11-11 03:00:00",
@@ -231,7 +231,7 @@
       "official_daily_aqi": 500,
       "dominating_pollutant": "PM2_5",
       "aqi_category": "Severe",
-      "scraped_at_ist": "2026-11-12 10:41:40"
+      "scraped_at_ist": "2026-11-12 10:47:24"
     },
     {
       "forecast_timestamp": "2026-11-11 04:00:00",
@@ -241,7 +241,7 @@
       "official_daily_aqi": 500,
       "dominating_pollutant": "PM2_5",
       "aqi_category": "Severe",
-      "scraped_at_ist": "2026-11-12 10:41:40"
+      "scraped_at_ist": "2026-11-12 10:47:24"
     },
     {
       "forecast_timestamp": "2026-11-11 05:00:00",
@@ -251,7 +251,7 @@
       "official_daily_aqi": 500,
       "dominating_pollutant": "PM2_5",
       "aqi_category": "Severe",
-      "scraped_at_ist": "2026-11-12 10:41:40"
+      "scraped_at_ist": "2026-11-12 10:47:24"
     },
     {
       "forecast_timestamp": "2026-11-11 06:00:00",
@@ -261,7 +261,7 @@
       "official_daily_aqi": 500,
       "dominating_pollutant": "PM2_5",
       "aqi_category": "Severe",
-      "scraped_at_ist": "2026-11-12 10:41:40"
+      "scraped_at_ist": "2026-11-12 10:47:24"
     },
     {
       "forecast_timestamp": "2026-11-11 07:00:00",
@@ -271,7 +271,7 @@
       "official_daily_aqi": 500,
       "dominating_pollutant": "PM2_5",
       "aqi_category": "Severe",
-      "scraped_at_ist": "2026-11-12 10:41:40"
+      "scraped_at_ist": "2026-11-12 10:47:24"
     },
     {
       "forecast_timestamp": "2026-11-11 08:00:00",
@@ -281,7 +281,7 @@
       "official_daily_aqi": 500,
       "dominating_pollutant": "PM2_5",
       "aqi_category": "Severe",
-      "scraped_at_ist": "2026-11-12 10:41:40"
+      "scraped_at_ist": "2026-11-12 10:47:24"
     },
     {
       "forecast_timestamp": "2026-11-11 09:00:00",
@@ -291,7 +291,7 @@
       "official_daily_aqi": 500,
       "dominating_pollutant": "PM2_5",
       "aqi_category": "Severe",
-      "scraped_at_ist": "2026-11-12 10:41:40"
+      "scraped_at_ist": "2026-11-12 10:47:24"
     },
     {
       "forecast_timestamp": "2026-11-11 10:00:00",
@@ -301,7 +301,7 @@
       "official_daily_aqi": 500,
       "dominating_pollutant": "PM2_5",
       "aqi_category": "Severe",
-      "scraped_at_ist": "2026-11-12 10:41:40"
+      "scraped_at_ist": "2026-11-12 10:47:24"
     }
   ]
 }
