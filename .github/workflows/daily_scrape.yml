@@ -2,8 +2,10 @@ name: Daily IMD Metro Air Quality Forecast Scraper
 
 on:
   schedule:
-    # 02:30 UTC = 08:00 AM IST (Indian Standard Time = UTC + 5:30)
-    - cron: '30 2 * * *'
+    # 02:17 UTC = 07:47 AM IST (Off-peak minute avoids GitHub Action queue congestion)
+    - cron: '17 2 * * *'
+    # Backup run at 02:47 UTC = 08:17 AM IST ensures data is captured if GitHub delays a run
+    - cron: '47 2 * * *'
   
   # Enables manual trigger from GitHub UI anytime ("Run workflow" button)
   workflow_dispatch:

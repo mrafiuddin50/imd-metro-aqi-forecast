@@ -36,3 +36,18 @@
 2026-11-11 09:44:01,536 [INFO] Saved 138 total rows to /home/runner/work/imd-metro-aqi-forecast/imd-metro-aqi-forecast/data/cities/chennai_hourly.csv
 2026-11-11 09:44:02,541 [INFO] Saved 787 rows to master CSV.
 2026-11-11 09:44:02,542 [INFO] Saved 34 rows to daily AQI summary CSV.
+2026-11-12 10:41:40,851 [INFO] Starting scrape run...
+2026-11-12 10:41:41,888 [INFO] [Delhi] Extracted 92 hourly points & 4 AQI gauges.
+2026-11-12 10:41:41,931 [INFO] Saved 161 total rows to /mnt/d/aq_dashboard/thane_dashboard_data/imd_metro_aqi_tracker/data/cities/delhi_hourly.csv
+2026-11-12 10:41:43,438 [INFO] [Mumbai] Extracted 92 hourly points & 4 AQI gauges.
+2026-11-12 10:41:43,481 [INFO] Saved 161 total rows to /mnt/d/aq_dashboard/thane_dashboard_data/imd_metro_aqi_tracker/data/cities/mumbai_hourly.csv
+2026-11-12 10:41:44,867 [INFO] [Hyderabad] Extracted 92 hourly points & 4 AQI gauges.
+2026-11-12 10:41:44,913 [INFO] Saved 161 total rows to /mnt/d/aq_dashboard/thane_dashboard_data/imd_metro_aqi_tracker/data/cities/hyderabad_hourly.csv
+2026-11-12 10:41:46,247 [INFO] [Bengaluru] Extracted 97 hourly points & 4 AQI gauges.
+2026-11-12 10:41:46,282 [INFO] Saved 97 total rows to /mnt/d/aq_dashboard/thane_dashboard_data/imd_metro_aqi_tracker/data/cities/bengaluru_hourly.csv
+2026-11-12 10:41:47,908 [INFO] [Kolkata] Extracted 92 hourly points & 4 AQI gauges.
+2026-11-12 10:41:47,983 [INFO] Saved 161 total rows to /mnt/d/aq_dashboard/thane_dashboard_data/imd_metro_aqi_tracker/data/cities/kolkata_hourly.csv
+2026-11-12 10:41:49,495 [INFO] [Chennai] Extracted 92 hourly points & 4 AQI gauges.
+2026-11-12 10:41:49,544 [INFO] Saved 161 total rows to /mnt/d/aq_dashboard/thane_dashboard_data/imd_metro_aqi_tracker/data/cities/chennai_hourly.csv
+2026-11-12 10:41:50,604 [INFO] Saved 902 rows to master CSV.
+2026-11-12 10:41:50,630 [INFO] Saved 39 rows to daily AQI summary CSV.
