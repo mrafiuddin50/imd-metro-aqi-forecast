@@ -1,8 +1,8 @@
 scraped_at_ist,city,forecast_date,official_aqi,dominating_pollutant,aqi_category
-2026-11-16 15:41:25,Bengaluru,2024-12-24 11:00:00,74,O3,Satisfactory
-2026-11-16 15:41:25,Bengaluru,2024-12-25 11:00:00,56,O3,Satisfactory
-2026-11-16 15:41:25,Bengaluru,2024-12-26 11:00:00,39,O3,Good
-2026-11-16 15:41:25,Bengaluru,2024-12-31 11:00:00,62,O3,Satisfactory
+2026-11-17 16:12:50,Bengaluru,2024-12-24 11:00:00,74,O3,Satisfactory
+2026-11-17 16:12:50,Bengaluru,2024-12-25 11:00:00,56,O3,Satisfactory
+2026-11-17 16:12:50,Bengaluru,2024-12-26 11:00:00,39,O3,Good
+2026-11-17 16:12:50,Bengaluru,2024-12-31 11:00:00,62,O3,Satisfactory
 2026-11-10 15:00:33,Chennai,2026-11-08 11:00:00,203,PM2_5,Poor
 2026-11-10 15:00:33,Chennai,2026-11-09 11:00:00,228,PM2_5,Poor
 2026-11-11 15:14:00,Chennai,2026-11-10 11:00:00,273,PM2_5,Poor
@@ -12,8 +12,10 @@ scraped_at_ist,city,forecast_date,official_aqi,dominating_pollutant,aqi_category
 2026-11-15 15:26:18,Chennai,2026-11-14 11:00:00,46,SO2,Good
 2026-11-16 15:41:30,Chennai,2026-11-15 11:00:00,81,PM2_5,Satisfactory
 2026-11-16 15:41:30,Chennai,2026-11-16 11:00:00,307,PM2_5,Very Poor
-2026-11-16 15:41:30,Chennai,2026-11-17 11:00:00,340,PM2_5,Very Poor
-2026-11-16 15:41:30,Chennai,2026-11-18 11:00:00,324,PM2_5,Very Poor
+2026-11-17 16:12:54,Chennai,2026-11-17 11:00:00,339,PM2_5,Very Poor
+2026-11-17 16:12:54,Chennai,2026-11-18 11:00:00,262,PM2_5,Poor
+2026-11-17 16:12:54,Chennai,2026-11-19 11:00:00,75,PM2_5,Satisfactory
+2026-11-17 16:12:54,Chennai,2026-11-20 11:00:00,125,PM2_5,Moderate
 2026-11-10 15:00:25,Delhi,2026-11-08 11:00:00,227,PM2_5,Poor
 2026-11-10 15:00:25,Delhi,2026-11-09 11:00:00,395,PM2_5,Very Poor
 2026-11-11 15:13:48,Delhi,2026-11-10 11:00:00,432,PM2_5,Severe
@@ -23,8 +25,10 @@ scraped_at_ist,city,forecast_date,official_aqi,dominating_pollutant,aqi_category
 2026-11-15 15:26:07,Delhi,2026-11-14 11:00:00,234,PM2_5,Poor
 2026-11-16 15:41:17,Delhi,2026-11-15 11:00:00,497,PM2_5,Severe
 2026-11-16 15:41:17,Delhi,2026-11-16 11:00:00,134,PM2_5,Moderate
-2026-11-16 15:41:17,Delhi,2026-11-17 11:00:00,144,PM2_5,Moderate
-2026-11-16 15:41:17,Delhi,2026-11-18 11:00:00,176,PM2_5,Moderate
+2026-11-17 16:12:43,Delhi,2026-11-17 11:00:00,142,PM2_5,Moderate
+2026-11-17 16:12:43,Delhi,2026-11-18 11:00:00,183,PM2_5,Moderate
+2026-11-17 16:12:43,Delhi,2026-11-19 11:00:00,239,PM2_5,Poor
+2026-11-17 16:12:43,Delhi,2026-11-20 11:00:00,518,PM2_5,Severe
 2026-11-10 15:00:28,Hyderabad,2026-11-08 11:00:00,141,PM2_5,Moderate
 2026-11-10 15:00:28,Hyderabad,2026-11-09 11:00:00,103,PM2_5,Moderate
 2026-11-11 15:13:54,Hyderabad,2026-11-10 11:00:00,159,PM2_5,Moderate
@@ -34,8 +38,10 @@ scraped_at_ist,city,forecast_date,official_aqi,dominating_pollutant,aqi_category
 2026-11-15 15:26:13,Hyderabad,2026-11-14 11:00:00,292,PM2_5,Poor
 2026-11-16 15:41:23,Hyderabad,2026-11-15 11:00:00,398,PM2_5,Very Poor
 2026-11-16 15:41:23,Hyderabad,2026-11-16 11:00:00,285,PM2_5,Poor
-2026-11-16 15:41:23,Hyderabad,2026-11-17 11:00:00,227,PM2_5,Poor
-2026-11-16 15:41:23,Hyderabad,2026-11-18 11:00:00,249,PM2_5,Poor
+2026-11-17 16:12:48,Hyderabad,2026-11-17 11:00:00,200,PM2_5,Moderate
+2026-11-17 16:12:48,Hyderabad,2026-11-18 11:00:00,200,PM2_5,Moderate
+2026-11-17 16:12:48,Hyderabad,2026-11-19 11:00:00,146,PM2_5,Moderate
+2026-11-17 16:12:48,Hyderabad,2026-11-20 11:00:00,75,PM2_5,Satisfactory
 2026-11-10 15:00:31,Kolkata,2026-11-08 11:00:00,343,PM2_5,Very Poor
 2026-11-10 15:00:31,Kolkata,2026-11-09 11:00:00,349,PM2_5,Very Poor
 2026-11-11 15:13:58,Kolkata,2026-11-10 11:00:00,398,PM2_5,Very Poor
@@ -45,8 +51,10 @@ scraped_at_ist,city,forecast_date,official_aqi,dominating_pollutant,aqi_category
 2026-11-15 15:26:16,Kolkata,2026-11-14 11:00:00,384,PM2_5,Very Poor
 2026-11-16 15:41:27,Kolkata,2026-11-15 11:00:00,459,PM2_5,Severe
 2026-11-16 15:41:27,Kolkata,2026-11-16 11:00:00,836,PM2_5,Severe
-2026-11-16 15:41:27,Kolkata,2026-11-17 11:00:00,1092,PM2_5,Severe
-2026-11-16 15:41:27,Kolkata,2026-11-18 11:00:00,290,PM2_5,Poor
+2026-11-17 16:12:52,Kolkata,2026-11-17 11:00:00,549,PM2_5,Severe
+2026-11-17 16:12:52,Kolkata,2026-11-18 11:00:00,317,PM2_5,Very Poor
+2026-11-17 16:12:52,Kolkata,2026-11-19 11:00:00,356,PM2_5,Very Poor
+2026-11-17 16:12:52,Kolkata,2026-11-20 11:00:00,427,PM2_5,Severe
 2026-11-10 15:00:27,Mumbai,2026-11-08 11:00:00,149,PM2_5,Moderate
 2026-11-10 15:00:27,Mumbai,2026-11-09 11:00:00,132,PM2_5,Moderate
 2026-11-11 15:13:52,Mumbai,2026-11-10 11:00:00,197,PM2_5,Moderate
@@ -56,5 +64,7 @@ scraped_at_ist,city,forecast_date,official_aqi,dominating_pollutant,aqi_category
 2026-11-15 15:26:11,Mumbai,2026-11-14 11:00:00,301,PM2_5,Very Poor
 2026-11-16 15:41:21,Mumbai,2026-11-15 11:00:00,362,PM2_5,Very Poor
 2026-11-16 15:41:21,Mumbai,2026-11-16 11:00:00,563,PM2_5,Severe
-2026-11-16 15:41:21,Mumbai,2026-11-17 11:00:00,648,PM2_5,Severe
-2026-11-16 15:41:21,Mumbai,2026-11-18 11:00:00,349,PM2_5,Very Poor
+2026-11-17 16:12:47,Mumbai,2026-11-17 11:00:00,447,PM2_5,Severe
+2026-11-17 16:12:47,Mumbai,2026-11-18 11:00:00,307,PM2_5,Very Poor
+2026-11-17 16:12:47,Mumbai,2026-11-19 11:00:00,303,PM2_5,Very Poor
+2026-11-17 16:12:47,Mumbai,2026-11-20 11:00:00,262,PM2_5,Poor
