@@ -2,26 +2,35 @@ name: Daily IMD Metro Air Quality Forecast Scraper
 
 on:
   schedule:
-    # 02:17 UTC = 07:47 AM IST (Off-peak minute avoids GitHub Action queue congestion)
+    # Main run: 02:17 UTC = 07:47 IST.
     - cron: '17 2 * * *'
-    # Backup run at 02:47 UTC = 08:17 AM IST ensures data is captured if GitHub delays a run
-    - cron: '47 2 * * *'
-  
-  # Enables manual trigger from GitHub UI anytime ("Run workflow" button)
+    # Backup run: 05:17 UTC = 10:47 IST. Catches the day's data if the main run
+    # failed or IMD was down. If the main run worked and nothing has changed,
+    # the backup finds no changes and makes no commit.
+    - cron: '17 5 * * *'
+    # Minute 17 keeps clear of the top of the hour, when GitHub's shared
+    # machines are busiest. GitHub can still start scheduled runs late on
+    # busy days.
+
+  # Adds a "Run workflow" button on the Actions tab for manual runs.
   workflow_dispatch:
 
 permissions:
   contents: write
 
+# Never let two runs overlap (e.g. a manual run during the scheduled one).
+concurrency:
+  group: daily-scrape
+  cancel-in-progress: false
+
 jobs:
   scrape-and-commit:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
 
     steps:
-      - name: Checkout repository code
+      - name: Check out the repository
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 1
 
       - name: Set up Python 3.11
         uses: actions/setup-python@v5
@@ -30,22 +39,31 @@ jobs:
           cache: 'pip'
 
       - name: Install dependencies
-        run: |
-          pip install --upgrade pip
-          pip install -r requirements.txt
+        run: pip install -r requirements.txt
 
-      - name: Run Scraper
-        run: |
-          python scripts/imd_scraper.py
+      # If the scraper reports a problem we still save whatever data it did
+      # collect (next step), then mark the run as failed (last step).
+      - name: Run scraper
+        id: scrape
+        continue-on-error: true
+        run: python scripts/imd_scraper.py
 
-      - name: Commit and Push Updated Data
+      - name: Commit and push data changes
+        if: always()
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          
-          # Add all city files, master hourly dataset, daily summary, and logs
-          git add data/ scraper.log
-          
-          # Commit only if files have changed
-          git commit -m "Auto-update IMD metro forecasts [$(date -u +'%Y-%m-%d %H:%M UTC')]" || echo "No changes to commit"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/
+          if git diff --cached --quiet; then
+            echo "No data changes to commit."
+            exit 0
+          fi
+          git commit -m "Auto-update IMD metro forecasts [$(date -u +'%Y-%m-%d %H:%M UTC')]"
+          git pull --rebase origin main
           git push
+
+      - name: Mark the run as failed if the scraper reported a problem
+        if: steps.scrape.outcome == 'failure'
+        run: |
+          echo "::error::The scraper reported a problem. Open the 'Run scraper' step for details."
+          exit 1

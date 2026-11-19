@@ -1,348 +1,376 @@
 """
-IMD Metro Air Quality Forecast Scraper (Hourly + Official Daily AQI)
-Council on Energy, Environment and Water (CEEW)
+IMD Metro Air Quality Forecast Scraper
 
-Extracts:
-1. Hourly PM2.5 and PM10 forecast time series (~92 continuous hours) from the top plots.
-2. Official AQI values and dominating pollutants directly from the IMD gauges below the plots.
-3. Clean city-separated CSVs under data/cities/{city}_hourly.csv + master combined dataset.
+What this script does, step by step:
+  1. Downloads each city's SILAM forecast page from the IMD NWP portal.
+  2. Finds the chart data hidden inside the page. The charts are drawn with
+     Plotly, and Plotly keeps the numbers in a block of JSON in the page source.
+     Reading that JSON is far more reliable than reading the chart image.
+  3. Pulls out hourly PM2.5 and PM10 and the daily AQI gauges.
+  4. Checks the forecast is current. IMD sometimes stops updating a city's page,
+     and an old page still downloads without any error.
+  5. Saves per-city CSVs, a combined CSV, a daily AQI CSV, a raw archive of this
+     run and a status file.
+  6. Exits with an error if anything broke, so GitHub marks the run as failed
+     and emails the repository owner.
 
-Target: https://nwp.imd.gov.in/aqfcst1.php -> SILAM Engine
-Cities: Delhi, Mumbai, Hyderabad, Bengaluru, Kolkata, Chennai
+Source page: https://nwp.imd.gov.in/aqfcst1.php (SILAM model)
+The values are model FORECASTS shown on IMD's site, not observed AQI.
 """
 
-import os
-import re
 import csv
 import json
-import time
 import logging
-from datetime import datetime, timezone, timedelta
-import urllib3
+import os
+import re
+import sys
+import time
+from datetime import datetime, timedelta, timezone
+
 import requests
+import urllib3
 
-# Suppress SSL certificate warnings
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+# ---------------------------------------------------------------------------
+# Settings: the things you are most likely to change
+# ---------------------------------------------------------------------------
 
-# Directory configurations
-SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-BASE_DIR = os.path.dirname(SCRIPT_DIR)
-DATA_DIR = os.path.join(BASE_DIR, "data")
-CITIES_DIR = os.path.join(DATA_DIR, "cities")
-DAILY_SUMMARY_CSV = os.path.join(DATA_DIR, "daily_official_aqi_summary.csv")
-MASTER_HOURLY_CSV = os.path.join(DATA_DIR, "master_all_cities_hourly.csv")
-LATEST_SNAPSHOT_JSON = os.path.join(DATA_DIR, "latest_snapshot.json")
-LOG_PATH = os.path.join(BASE_DIR, "scraper.log")
+CITIES = ["Delhi", "Mumbai", "Hyderabad", "Bengaluru", "Kolkata", "Chennai"]
 
-os.makedirs(CITIES_DIR, exist_ok=True)
+PAGE_URL = "https://nwp.imd.gov.in/silam/{city}.html"
 
-logging.basicConfig(
-    filename=LOG_PATH,
-    level=logging.INFO,
-    format="%(asctime)s [%(levelname)s] %(message)s"
+# The tracker starts on this date. Older rows are dropped from the main files.
+# (This also clears out the December 2024 rows from IMD's stale Bengaluru page.)
+DATA_START_DATE = "2026-11-08"
+
+# Say honestly who is asking for the page, with a link to find out more.
+USER_AGENT = (
+    "imd-metro-aqi-forecast research scraper "
+    "(+https://github.com/mrafiuddin50/imd-metro-aqi-forecast)"
 )
 
-METRO_CITIES = [
-    "Delhi",
-    "Mumbai",
-    "Hyderabad",
-    "Bengaluru",
-    "Kolkata",
-    "Chennai"
+PAUSE_BETWEEN_CITIES_SECONDS = 2
+ATTEMPTS_PER_CITY = 3
+
+IST = timezone(timedelta(hours=5, minutes=30))
+
+# ---------------------------------------------------------------------------
+# File locations
+# ---------------------------------------------------------------------------
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DATA_DIR = os.path.join(BASE_DIR, "data")
+CITIES_DIR = os.path.join(DATA_DIR, "cities")
+ARCHIVE_DIR = os.path.join(DATA_DIR, "archive")
+MASTER_HOURLY_CSV = os.path.join(DATA_DIR, "master_all_cities_hourly.csv")
+DAILY_SUMMARY_CSV = os.path.join(DATA_DIR, "daily_official_aqi_summary.csv")
+STATUS_JSON = os.path.join(DATA_DIR, "latest_snapshot.json")
+
+HOURLY_FIELDS = [
+    "forecast_timestamp",
+    "city",
+    "pm25_hourly",
+    "pm10_hourly",
+    "daily_imd_silam_forecast_aqi",
+    "daily_dominating_pollutant",
+    "daily_aqi_category_derived",
+    "scraped_at_ist",
 ]
 
-HEADERS = {
-    "User-Agent": (
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-        "AppleWebKit/537.36 (KHTML, like Gecko) "
-        "Chrome/124.0.0.0 Safari/537.36"
-    ),
-    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-    "Referer": "https://nwp.imd.gov.in/aqfcst1.php"
+DAILY_FIELDS = [
+    "scraped_at_ist",
+    "city",
+    "forecast_date_utc",
+    "imd_silam_forecast_aqi",
+    "dominating_pollutant",
+    "aqi_category_derived",
+]
+
+# Old column names (before November 2026) -> new names. Used to upgrade
+# existing CSVs the first time this version of the script runs.
+OLD_HOURLY_NAMES = {
+    "official_daily_aqi": "daily_imd_silam_forecast_aqi",
+    "dominating_pollutant": "daily_dominating_pollutant",
+    "aqi_category": "daily_aqi_category_derived",
+}
+OLD_DAILY_NAMES = {
+    "forecast_date": "forecast_date_utc",
+    "official_aqi": "imd_silam_forecast_aqi",
+    "aqi_category": "aqi_category_derived",
 }
 
-def get_ist_now():
-    """Returns the current datetime in Indian Standard Time (UTC+5:30)."""
-    ist = timezone(timedelta(hours=5, minutes=30))
-    return datetime.now(ist)
+# Log to the screen (GitHub keeps each run's screen output), with UTC labelled.
+logging.Formatter.converter = time.gmtime
+logging.basicConfig(
+    stream=sys.stdout,
+    level=logging.INFO,
+    format="%(asctime)s UTC [%(levelname)s] %(message)s",
+)
+log = logging.getLogger("imd_scraper")
 
-def get_cpcb_category(aqi_val):
-    """Returns official CPCB AQI categories based on the numeric AQI value."""
-    try:
-        val = float(aqi_val)
-        if val <= 50:
-            return "Good"
-        elif val <= 100:
-            return "Satisfactory"
-        elif val <= 200:
-            return "Moderate"
-        elif val <= 300:
-            return "Poor"
-        elif val <= 400:
-            return "Very Poor"
-        else:
-            return "Severe"
-    except (ValueError, TypeError):
-        return "Unknown"
 
-def scrape_city_data(session, city_name):
-    """
-    Extracts:
-    - Hourly PM2.5 and PM10 time series
-    - Official daily AQI gauges located below the forecast plots
-    """
-    url = f"https://nwp.imd.gov.in/silam/{city_name}.html"
-    ist_str = get_ist_now().strftime("%Y-%m-%d %H:%M:%S")
+class PageProblem(Exception):
+    """The page downloaded, but its contents were not what we expected."""
 
-    for attempt in range(1, 4):
+
+# ---------------------------------------------------------------------------
+# Step 1: download a page
+# ---------------------------------------------------------------------------
+
+def fetch_page(session, url):
+    """Download a page, retrying a few times. Returns the HTML text, or None."""
+    for attempt in range(1, ATTEMPTS_PER_CITY + 1):
         try:
-            resp = session.get(url, headers=HEADERS, verify=False, timeout=30)
+            try:
+                resp = session.get(url, timeout=30)
+            except requests.exceptions.SSLError:
+                # IMD's security certificate does not always pass Python's checks.
+                # We only READ public pages, so we fall back to an unchecked
+                # connection, but we say so loudly instead of hiding it.
+                log.warning("SSL certificate check failed for %s; retrying without it.", url)
+                urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+                resp = session.get(url, timeout=30, verify=False)
+
             if resp.status_code == 200:
-                html = resp.text
-                match = re.search(r'<script type="application/json" data-for="[^"]+">(.*?)</script>', html, re.DOTALL)
-                if not match:
-                    logging.warning(f"[{city_name}] Could not find Plotly JSON payload.")
-                    return [], []
-
-                data = json.loads(match.group(1))
-                traces = data.get("x", {}).get("data", [])
-
-                # 1. Extract Official Daily AQI Gauges (located below the plots)
-                daily_gauges = []
-                daily_aqi_by_date = {} # maps YYYY-MM-DD -> {aqi, dominating, category}
-
-                for t in traces:
-                    if t.get("type") == "indicator" and t.get("value") is not None:
-                        val = round(float(t.get("value")))
-                        title_text = t.get("title", {}).get("text", "")
-                        
-                        # Match: "AQI <forecast_date>... Dominating: <pollutant>"
-                        date_match = re.search(r'AQI\s+([^<]+)', title_text)
-                        dom_match = re.search(r'Dominating:\s*([^"]+)', title_text)
-
-                        raw_date = date_match.group(1).replace(" UTC", "").strip() if date_match else "N/A"
-                        pollutant = dom_match.group(1).strip() if dom_match else "N/A"
-                        cat = get_cpcb_category(val)
-
-                        gauge_record = {
-                            "scraped_at_ist": ist_str,
-                            "city": city_name,
-                            "forecast_date": raw_date,
-                            "official_aqi": val,
-                            "dominating_pollutant": pollutant,
-                            "aqi_category": cat
-                        }
-
-                        # Deduplicate across desktop/mobile views
-                        day_key = raw_date[:10]
-                        if day_key not in daily_aqi_by_date:
-                            daily_aqi_by_date[day_key] = gauge_record
-                            daily_gauges.append(gauge_record)
-
-                # 2. Extract Hourly PM2.5 and PM10 Traces from the top plots
-                pm25_trace = next((t for t in traces if t.get("name") == "PM2_5"), None)
-                pm10_trace = next((t for t in traces if t.get("name") == "PM10"), None)
-
-                hourly_records = []
-                if pm25_trace and pm10_trace:
-                    x_pm25 = pm25_trace.get("x", [])
-                    y_pm25 = pm25_trace.get("y", [])
-                    x_pm10 = pm10_trace.get("x", [])
-                    y_pm10 = pm10_trace.get("y", [])
-
-                    # Map PM10 by clean timestamp string
-                    pm10_dict = {}
-                    for i, ts in enumerate(x_pm10):
-                        clean_ts = ts.split(".")[0].strip()
-                        pm10_dict[clean_ts] = y_pm10[i] if i < len(y_pm10) else None
-
-                    for i, ts in enumerate(x_pm25):
-                        clean_ts = ts.split(".")[0].strip()
-                        p25_val = round(float(y_pm25[i]), 1) if i < len(y_pm25) and y_pm25[i] is not None else "N/A"
-                        p10_val = round(float(pm10_dict.get(clean_ts)), 1) if pm10_dict.get(clean_ts) is not None else "N/A"
-                        
-                        # Match day to the official daily AQI gauge below the plot
-                        day_key = clean_ts[:10]
-                        gauge_info = daily_aqi_by_date.get(day_key, {})
-                        official_aqi = gauge_info.get("official_aqi", "N/A")
-                        dom_pollutant = gauge_info.get("dominating_pollutant", "N/A")
-                        category = gauge_info.get("aqi_category", "N/A")
-
-                        hourly_records.append({
-                            "forecast_timestamp": clean_ts,
-                            "city": city_name,
-                            "pm25_hourly": p25_val,
-                            "pm10_hourly": p10_val,
-                            "official_daily_aqi": official_aqi,
-                            "dominating_pollutant": dom_pollutant,
-                            "aqi_category": category,
-                            "scraped_at_ist": ist_str
-                        })
-
-                logging.info(f"[{city_name}] Extracted {len(hourly_records)} hourly points & {len(daily_gauges)} AQI gauges.")
-                return hourly_records, daily_gauges
-
-            logging.warning(f"[{city_name}] Attempt {attempt} returned HTTP {resp.status_code}")
-            time.sleep(attempt * 2)
-
+                return resp.text
+            log.warning("Attempt %d: %s returned HTTP %d", attempt, url, resp.status_code)
         except requests.exceptions.RequestException as e:
-            logging.warning(f"[{city_name}] Attempt {attempt} failed: {e}")
-            time.sleep(attempt * 2)
+            log.warning("Attempt %d: %s failed: %s", attempt, url, e)
+        time.sleep(attempt * 2)
+    return None
 
-    logging.error(f"Failed to fetch {city_name} after 3 attempts.")
-    return [], []
 
-def save_city_hourly_csv(city_name, records):
+# ---------------------------------------------------------------------------
+# Step 2 and 3: find the chart data and pull out the numbers
+# ---------------------------------------------------------------------------
+
+def aqi_category(aqi):
+    """CPCB category for an AQI number. Worked out here; IMD's page does not give it."""
+    if aqi <= 50:
+        return "Good"
+    if aqi <= 100:
+        return "Satisfactory"
+    if aqi <= 200:
+        return "Moderate"
+    if aqi <= 300:
+        return "Poor"
+    if aqi <= 400:
+        return "Very Poor"
+    return "Severe"
+
+
+def number_or_blank(value):
+    """Round to one decimal place; blank if the value is missing."""
+    if value is None:
+        return ""
+    return str(round(float(value), 1))
+
+
+def parse_page(html, city, scraped_at):
+    """Return (hourly_rows, daily_rows) from one city's page."""
+    match = re.search(
+        r'<script type="application/json" data-for="[^"]+">(.*?)</script>', html, re.DOTALL
+    )
+    if not match:
+        raise PageProblem("chart data (Plotly JSON) not found; IMD may have changed the page")
+
+    traces = json.loads(match.group(1)).get("x", {}).get("data", [])
+
+    # Daily AQI gauges. The page shows each gauge twice (desktop and mobile
+    # layouts), so keep only the first gauge for each date.
+    daily_by_date = {}
+    for t in traces:
+        if t.get("type") != "indicator" or t.get("value") is None:
+            continue
+        title = t.get("title", {}).get("text", "")
+        date_match = re.search(r"AQI\s+([^<]+)", title)
+        pollutant_match = re.search(r'Dominating:\s*([^"<]+)', title)
+        if not date_match:
+            continue
+        forecast_date = date_match.group(1).replace(" UTC", "").strip()
+        aqi = round(float(t["value"]))
+        day = forecast_date[:10]
+        if day not in daily_by_date:
+            daily_by_date[day] = {
+                "scraped_at_ist": scraped_at,
+                "city": city,
+                "forecast_date_utc": forecast_date,
+                "imd_silam_forecast_aqi": str(aqi),
+                "dominating_pollutant": pollutant_match.group(1).strip() if pollutant_match else "",
+                "aqi_category_derived": aqi_category(aqi),
+            }
+
+    # Hourly PM2.5 and PM10 lines from the charts.
+    pm25 = next((t for t in traces if t.get("name") == "PM2_5"), None)
+    pm10 = next((t for t in traces if t.get("name") == "PM10"), None)
+    if not pm25 or not pm10:
+        raise PageProblem("PM2_5 or PM10 chart line not found")
+
+    def clean(ts):
+        return ts.split(".")[0].strip()
+
+    pm10_by_time = {clean(ts): y for ts, y in zip(pm10.get("x", []), pm10.get("y", []))}
+
+    hourly = []
+    for ts, y in zip(pm25.get("x", []), pm25.get("y", [])):
+        ts = clean(ts)
+        gauge = daily_by_date.get(ts[:10], {})
+        hourly.append({
+            "forecast_timestamp": ts,
+            "city": city,
+            "pm25_hourly": number_or_blank(y),
+            "pm10_hourly": number_or_blank(pm10_by_time.get(ts)),
+            "daily_imd_silam_forecast_aqi": gauge.get("imd_silam_forecast_aqi", ""),
+            "daily_dominating_pollutant": gauge.get("dominating_pollutant", ""),
+            "daily_aqi_category_derived": gauge.get("aqi_category_derived", ""),
+            "scraped_at_ist": scraped_at,
+        })
+
+    if not hourly:
+        raise PageProblem("chart lines were found but contained no hourly values")
+
+    return hourly, list(daily_by_date.values())
+
+
+# ---------------------------------------------------------------------------
+# Step 5: save, merging with what is already there
+# ---------------------------------------------------------------------------
+
+def merge_and_save(path, new_rows, key_fields, fieldnames, old_names, date_field):
     """
-    Saves dedicated city hourly CSV under data/cities/{city_lower}_hourly.csv.
-    Merges and deduplicates based on forecast_timestamp.
+    Merge new rows into a CSV and write it back.
+
+    - Rows are matched on key_fields (e.g. city + forecast hour). A newer
+      forecast for the same hour replaces the older one.
+    - If a row's values have not changed, the old row (and its scraped_at_ist)
+      is kept, so a run with no new data leaves the file byte-for-byte the same
+      and there is nothing to commit.
+    - Rows dated before DATA_START_DATE are dropped.
     """
-    city_filename = f"{city_name.lower()}_hourly.csv"
-    city_filepath = os.path.join(CITIES_DIR, city_filename)
+    def key(row):
+        return tuple(row[k] for k in key_fields)
 
-    fieldnames = [
-        "forecast_timestamp",
-        "city",
-        "pm25_hourly",
-        "pm10_hourly",
-        "official_daily_aqi",
-        "dominating_pollutant",
-        "aqi_category",
-        "scraped_at_ist"
-    ]
+    rows = {}
+    if os.path.exists(path):
+        with open(path, newline="", encoding="utf-8") as f:
+            for r in csv.DictReader(f):
+                r = {old_names.get(k, k): v for k, v in r.items()}
+                r = {k: ("" if r.get(k) in (None, "N/A") else r[k]) for k in fieldnames}
+                rows[key(r)] = r
 
-    existing_rows = {}
-    if os.path.exists(city_filepath):
-        try:
-            with open(city_filepath, "r", encoding="utf-8") as f:
-                reader = csv.DictReader(f)
-                for r in reader:
-                    existing_rows[r.get("forecast_timestamp")] = r
-        except Exception as e:
-            logging.warning(f"Could not read existing file for {city_name}: {e}")
+    for r in new_rows:
+        old = rows.get(key(r))
+        unchanged = old is not None and all(
+            old[k] == r[k] for k in fieldnames if k != "scraped_at_ist"
+        )
+        if not unchanged:
+            rows[key(r)] = r
 
-    # Update/append with new forecast records
-    for r in records:
-        existing_rows[r["forecast_timestamp"]] = r
+    kept = [r for r in rows.values() if r[date_field][:10] >= DATA_START_DATE]
+    kept.sort(key=key)
 
-    # Write sorted chronologically
-    sorted_rows = sorted(existing_rows.values(), key=lambda x: x["forecast_timestamp"])
-    with open(city_filepath, "w", newline="", encoding="utf-8") as f:
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, "w", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()
-        writer.writerows(sorted_rows)
+        writer.writerows(kept)
+    return len(kept)
 
-    logging.info(f"Saved {len(sorted_rows)} total rows to {city_filepath}")
 
-def save_master_hourly_csv(all_hourly_records):
-    """Saves combined panel dataset for all cities into data/master_all_cities_hourly.csv."""
-    fieldnames = [
-        "forecast_timestamp",
-        "city",
-        "pm25_hourly",
-        "pm10_hourly",
-        "official_daily_aqi",
-        "dominating_pollutant",
-        "aqi_category",
-        "scraped_at_ist"
-    ]
-
-    existing_rows = {}
-    if os.path.exists(MASTER_HOURLY_CSV):
-        try:
-            with open(MASTER_HOURLY_CSV, "r", encoding="utf-8") as f:
-                reader = csv.DictReader(f)
-                for r in reader:
-                    key = (r.get("city"), r.get("forecast_timestamp"))
-                    existing_rows[key] = r
-        except Exception as e:
-            logging.warning(f"Could not read master hourly CSV: {e}")
-
-    for r in all_hourly_records:
-        key = (r["city"], r["forecast_timestamp"])
-        existing_rows[key] = r
-
-    sorted_rows = sorted(existing_rows.values(), key=lambda x: (x["city"], x["forecast_timestamp"]))
-    with open(MASTER_HOURLY_CSV, "w", newline="", encoding="utf-8") as f:
-        writer = csv.DictWriter(f, fieldnames=fieldnames)
-        writer.writeheader()
-        writer.writerows(sorted_rows)
-
-    logging.info(f"Saved {len(sorted_rows)} rows to master CSV.")
-
-def save_daily_aqi_summary_csv(all_daily_gauges):
-    """Saves official daily gauge summary across all 6 cities."""
-    fieldnames = [
-        "scraped_at_ist",
-        "city",
-        "forecast_date",
-        "official_aqi",
-        "dominating_pollutant",
-        "aqi_category"
-    ]
-
-    existing_rows = {}
-    if os.path.exists(DAILY_SUMMARY_CSV):
-        try:
-            with open(DAILY_SUMMARY_CSV, "r", encoding="utf-8") as f:
-                reader = csv.DictReader(f)
-                for r in reader:
-                    key = (r.get("city"), r.get("forecast_date"))
-                    existing_rows[key] = r
-        except Exception as e:
-            logging.warning(f"Could not read daily summary CSV: {e}")
-
-    for r in all_daily_gauges:
-        key = (r["city"], r["forecast_date"])
-        existing_rows[key] = r
-
-    sorted_rows = sorted(existing_rows.values(), key=lambda x: (x["city"], x["forecast_date"]))
-    with open(DAILY_SUMMARY_CSV, "w", newline="", encoding="utf-8") as f:
-        writer = csv.DictWriter(f, fieldnames=fieldnames)
-        writer.writeheader()
-        writer.writerows(sorted_rows)
-
-    logging.info(f"Saved {len(sorted_rows)} rows to daily AQI summary CSV.")
+# ---------------------------------------------------------------------------
+# Main run
+# ---------------------------------------------------------------------------
 
 def main():
-    start_time = get_ist_now()
-    print(f"[{start_time.strftime('%Y-%m-%d %H:%M:%S IST')}] Scraping IMD Metro Hourly & Official AQI Data...")
-    logging.info("Starting scrape run...")
+    now = datetime.now(IST)
+    scraped_at = now.strftime("%Y-%m-%d %H:%M:%S")
+    today = now.strftime("%Y-%m-%d")
+    log.info("Starting run (IST %s)", scraped_at)
 
     session = requests.Session()
-    all_hourly_records = []
-    all_daily_gauges = []
+    session.headers.update({"User-Agent": USER_AGENT})
 
-    for city in METRO_CITIES:
-        hourly, gauges = scrape_city_data(session, city)
-        if hourly:
-            save_city_hourly_csv(city, hourly)
-            all_hourly_records.extend(hourly)
-        if gauges:
-            all_daily_gauges.extend(gauges)
+    status = {}
+    fresh_hourly, fresh_daily = [], []
 
-        print(f"  ✔ {city.ljust(11)}: {len(hourly)} hourly points | {len(gauges)} official AQI gauges")
-        time.sleep(1)
+    for city in CITIES:
+        html = fetch_page(session, PAGE_URL.format(city=city))
+        if html is None:
+            status[city] = {"status": "failed", "message": "page could not be downloaded"}
+        else:
+            try:
+                hourly, daily = parse_page(html, city, scraped_at)
+                newest = max(r["forecast_timestamp"] for r in hourly)
+                # Step 4: a forecast whose last hour is before today is stale.
+                if newest[:10] < today:
+                    status[city] = {
+                        "status": "stale",
+                        "newest_forecast_hour": newest,
+                        "message": "IMD's page has not been updated; data not saved",
+                    }
+                else:
+                    status[city] = {"status": "ok", "newest_forecast_hour": newest}
+                    fresh_hourly.extend(hourly)
+                    fresh_daily.extend(daily)
+            except (PageProblem, ValueError, KeyError) as e:
+                status[city] = {"status": "failed", "message": str(e)}
 
-    if all_hourly_records:
-        save_master_hourly_csv(all_hourly_records)
-    if all_daily_gauges:
-        save_daily_aqi_summary_csv(all_daily_gauges)
+        city_status = status[city]
+        log.info("%-10s %s %s", city, city_status["status"].upper(),
+                 city_status.get("newest_forecast_hour", city_status.get("message", "")))
+        time.sleep(PAUSE_BETWEEN_CITIES_SECONDS)
 
-    # Save latest snapshot JSON
-    snapshot = {
-        "updated_at_ist": start_time.strftime("%Y-%m-%d %H:%M:%S"),
-        "cities": METRO_CITIES,
-        "daily_official_gauges": all_daily_gauges,
-        "sample_hourly_records": all_hourly_records[:10]
-    }
-    with open(LATEST_SNAPSHOT_JSON, "w", encoding="utf-8") as f:
-        json.dump(snapshot, f, indent=2, ensure_ascii=False)
+    # Per-city files. Stale and failed cities are still rewritten, which only
+    # applies the DATA_START_DATE filter to rows already there.
+    for city in CITIES:
+        rows = [r for r in fresh_hourly if r["city"] == city]
+        merge_and_save(os.path.join(CITIES_DIR, f"{city.lower()}_hourly.csv"), rows,
+                       ["forecast_timestamp"], HOURLY_FIELDS, OLD_HOURLY_NAMES,
+                       "forecast_timestamp")
 
-    print(f"\n[DONE] Extraction completed successfully!")
-    print(f"  - Per-City CSVs:          data/cities/<city>_hourly.csv (6 cities)")
-    print(f"  - Master Hourly Dataset:  data/master_all_cities_hourly.csv ({len(all_hourly_records)} rows)")
-    print(f"  - Daily Official AQI:     data/daily_official_aqi_summary.csv ({len(all_daily_gauges)} rows)")
+    n_master = merge_and_save(MASTER_HOURLY_CSV, fresh_hourly, ["city", "forecast_timestamp"],
+                              HOURLY_FIELDS, OLD_HOURLY_NAMES, "forecast_timestamp")
+    n_daily = merge_and_save(DAILY_SUMMARY_CSV, fresh_daily, ["city", "forecast_date_utc"],
+                             DAILY_FIELDS, OLD_DAILY_NAMES, "forecast_date_utc")
+
+    # Raw archive: one pair of files per day, never touched by later days.
+    # This keeps forecasts made 1, 2 and 3 days ahead, which the main files
+    # overwrite. (A second run on the same day updates that day's files.)
+    if fresh_hourly:
+        merge_and_save(os.path.join(ARCHIVE_DIR, f"{today}_hourly.csv"), fresh_hourly,
+                       ["city", "forecast_timestamp"], HOURLY_FIELDS, {}, "forecast_timestamp")
+        merge_and_save(os.path.join(ARCHIVE_DIR, f"{today}_daily.csv"), fresh_daily,
+                       ["city", "forecast_date_utc"], DAILY_FIELDS, {}, "forecast_date_utc")
+
+    # Status file. No run timestamp in here on purpose: if nothing changed,
+    # this file does not change either.
+    with open(DAILY_SUMMARY_CSV, newline="", encoding="utf-8") as f:
+        upcoming = [r for r in csv.DictReader(f) if r["forecast_date_utc"][:10] >= today]
+    with open(STATUS_JSON, "w", encoding="utf-8") as f:
+        json.dump({
+            "note": "IMD SILAM model forecasts, not observed AQI. Categories are derived "
+                    "by this script from CPCB breakpoints.",
+            "cities": status,
+            "upcoming_daily_forecasts": upcoming,
+        }, f, indent=2, ensure_ascii=False)
+        f.write("\n")
+
+    log.info("Saved: master hourly %d rows, daily summary %d rows", n_master, n_daily)
+
+    # Step 6: report problems so GitHub shows them. Lines starting with
+    # ::warning:: or ::error:: become notes on the GitHub Actions run page.
+    failed = [c for c, s in status.items() if s["status"] == "failed"]
+    stale = [c for c, s in status.items() if s["status"] == "stale"]
+    for c in stale:
+        print(f"::warning::{c}: IMD page is stale (newest forecast hour "
+              f"{status[c]['newest_forecast_hour']}). Data not saved.")
+    for c in failed:
+        print(f"::error::{c}: {status[c]['message']}")
+
+    if failed or not fresh_hourly:
+        log.error("Run finished with problems: failed=%s stale=%s", failed, stale)
+        sys.exit(1)
+    log.info("Run finished. Stale cities (skipped): %s", stale or "none")
+
 
 if __name__ == "__main__":
     main()

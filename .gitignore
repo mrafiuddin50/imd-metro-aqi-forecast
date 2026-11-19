@@ -3,3 +3,7 @@ __pycache__/
 venv/
 .env
 .vscode/
+
+# Run logs: GitHub keeps each run's log on the Actions tab
+scraper.log
+*.log
