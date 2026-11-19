@@ -1,4 +1,4 @@
-forecast_timestamp,city,pm25_hourly,pm10_hourly,official_daily_aqi,dominating_pollutant,aqi_category,scraped_at_ist
+forecast_timestamp,city,pm25_hourly,pm10_hourly,daily_imd_silam_forecast_aqi,daily_dominating_pollutant,daily_aqi_category_derived,scraped_at_ist
 2026-11-08 01:00:00,Chennai,107.6,127.7,203,PM2_5,Poor,2026-11-10 15:00:33
 2026-11-08 02:00:00,Chennai,106.3,125.4,203,PM2_5,Poor,2026-11-10 15:00:33
 2026-11-08 03:00:00,Chennai,106.5,123.2,203,PM2_5,Poor,2026-11-10 15:00:33

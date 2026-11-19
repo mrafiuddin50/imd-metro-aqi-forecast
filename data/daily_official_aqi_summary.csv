@@ -1,8 +1,4 @@
-scraped_at_ist,city,forecast_date,official_aqi,dominating_pollutant,aqi_category
-2026-11-19 16:16:12,Bengaluru,2024-12-24 11:00:00,74,O3,Satisfactory
-2026-11-19 16:16:12,Bengaluru,2024-12-25 11:00:00,56,O3,Satisfactory
-2026-11-19 16:16:12,Bengaluru,2024-12-26 11:00:00,39,O3,Good
-2026-11-19 16:16:12,Bengaluru,2024-12-31 11:00:00,62,O3,Satisfactory
+scraped_at_ist,city,forecast_date_utc,imd_silam_forecast_aqi,dominating_pollutant,aqi_category_derived
 2026-11-10 15:00:33,Chennai,2026-11-08 11:00:00,203,PM2_5,Poor
 2026-11-10 15:00:33,Chennai,2026-11-09 11:00:00,228,PM2_5,Poor
 2026-11-11 15:14:00,Chennai,2026-11-10 11:00:00,273,PM2_5,Poor

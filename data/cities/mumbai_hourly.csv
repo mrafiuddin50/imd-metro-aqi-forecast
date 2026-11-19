@@ -1,4 +1,4 @@
-forecast_timestamp,city,pm25_hourly,pm10_hourly,official_daily_aqi,dominating_pollutant,aqi_category,scraped_at_ist
+forecast_timestamp,city,pm25_hourly,pm10_hourly,daily_imd_silam_forecast_aqi,daily_dominating_pollutant,daily_aqi_category_derived,scraped_at_ist
 2026-11-08 01:00:00,Mumbai,81.1,98.6,149,PM2_5,Moderate,2026-11-10 15:00:27
 2026-11-08 02:00:00,Mumbai,111.7,134.8,149,PM2_5,Moderate,2026-11-10 15:00:27
 2026-11-08 03:00:00,Mumbai,103.8,126.1,149,PM2_5,Moderate,2026-11-10 15:00:27
