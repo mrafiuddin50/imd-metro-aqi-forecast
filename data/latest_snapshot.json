@@ -3,15 +3,15 @@
   "cities": {
     "Delhi": {
       "status": "ok",
-      "newest_forecast_hour": "2026-11-21 23:00:00"
+      "newest_forecast_hour": "2026-11-22 23:00:00"
     },
     "Mumbai": {
       "status": "ok",
-      "newest_forecast_hour": "2026-11-21 23:00:00"
+      "newest_forecast_hour": "2026-11-22 23:00:00"
     },
     "Hyderabad": {
       "status": "ok",
-      "newest_forecast_hour": "2026-11-21 23:00:00"
+      "newest_forecast_hour": "2026-11-22 23:00:00"
     },
     "Bengaluru": {
       "status": "stale",
@@ -20,133 +20,133 @@
     },
     "Kolkata": {
       "status": "ok",
-      "newest_forecast_hour": "2026-11-21 23:00:00"
+      "newest_forecast_hour": "2026-11-22 23:00:00"
     },
     "Chennai": {
       "status": "ok",
-      "newest_forecast_hour": "2026-11-21 23:00:00"
+      "newest_forecast_hour": "2026-11-22 23:00:00"
     }
   },
   "upcoming_daily_forecasts": [
     {
-      "scraped_at_ist": "2026-11-19 16:16:21",
-      "city": "Chennai",
-      "forecast_date_utc": "2026-11-19 11:00:00",
-      "imd_silam_forecast_aqi": "227",
-      "dominating_pollutant": "PM2_5",
-      "aqi_category_derived": "Poor"
-    },
-    {
-      "scraped_at_ist": "2026-11-19 16:16:21",
+      "scraped_at_ist": "2026-11-20 15:30:07",
       "city": "Chennai",
       "forecast_date_utc": "2026-11-20 11:00:00",
-      "imd_silam_forecast_aqi": "319",
+      "imd_silam_forecast_aqi": "169",
+      "dominating_pollutant": "PM2_5",
+      "aqi_category_derived": "Moderate"
+    },
+    {
+      "scraped_at_ist": "2026-11-20 15:30:07",
+      "city": "Chennai",
+      "forecast_date_utc": "2026-11-21 11:00:00",
+      "imd_silam_forecast_aqi": "115",
+      "dominating_pollutant": "PM2_5",
+      "aqi_category_derived": "Moderate"
+    },
+    {
+      "scraped_at_ist": "2026-11-20 15:30:07",
+      "city": "Chennai",
+      "forecast_date_utc": "2026-11-22 11:00:00",
+      "imd_silam_forecast_aqi": "35",
+      "dominating_pollutant": "O3",
+      "aqi_category_derived": "Good"
+    },
+    {
+      "scraped_at_ist": "2026-11-20 15:30:07",
+      "city": "Delhi",
+      "forecast_date_utc": "2026-11-20 11:00:00",
+      "imd_silam_forecast_aqi": "346",
       "dominating_pollutant": "PM2_5",
       "aqi_category_derived": "Very Poor"
     },
     {
-      "scraped_at_ist": "2026-11-19 16:16:21",
-      "city": "Chennai",
+      "scraped_at_ist": "2026-11-20 15:30:07",
+      "city": "Delhi",
       "forecast_date_utc": "2026-11-21 11:00:00",
-      "imd_silam_forecast_aqi": "139",
-      "dominating_pollutant": "PM2_5",
-      "aqi_category_derived": "Moderate"
-    },
-    {
-      "scraped_at_ist": "2026-11-19 16:15:58",
-      "city": "Delhi",
-      "forecast_date_utc": "2026-11-19 11:00:00",
-      "imd_silam_forecast_aqi": "179",
-      "dominating_pollutant": "PM2_5",
-      "aqi_category_derived": "Moderate"
-    },
-    {
-      "scraped_at_ist": "2026-11-19 16:15:58",
-      "city": "Delhi",
-      "forecast_date_utc": "2026-11-20 11:00:00",
-      "imd_silam_forecast_aqi": "521",
+      "imd_silam_forecast_aqi": "413",
       "dominating_pollutant": "PM2_5",
       "aqi_category_derived": "Severe"
     },
     {
-      "scraped_at_ist": "2026-11-19 16:15:58",
+      "scraped_at_ist": "2026-11-20 15:30:07",
       "city": "Delhi",
-      "forecast_date_utc": "2026-11-21 11:00:00",
-      "imd_silam_forecast_aqi": "518",
+      "forecast_date_utc": "2026-11-22 11:00:00",
+      "imd_silam_forecast_aqi": "433",
       "dominating_pollutant": "PM2_5",
       "aqi_category_derived": "Severe"
     },
     {
-      "scraped_at_ist": "2026-11-19 16:16:07",
+      "scraped_at_ist": "2026-11-20 15:30:07",
       "city": "Hyderabad",
-      "forecast_date_utc": "2026-11-19 11:00:00",
-      "imd_silam_forecast_aqi": "224",
+      "forecast_date_utc": "2026-11-20 11:00:00",
+      "imd_silam_forecast_aqi": "114",
+      "dominating_pollutant": "PM2_5",
+      "aqi_category_derived": "Moderate"
+    },
+    {
+      "scraped_at_ist": "2026-11-20 15:30:07",
+      "city": "Hyderabad",
+      "forecast_date_utc": "2026-11-21 11:00:00",
+      "imd_silam_forecast_aqi": "62",
+      "dominating_pollutant": "SO2",
+      "aqi_category_derived": "Satisfactory"
+    },
+    {
+      "scraped_at_ist": "2026-11-20 15:30:07",
+      "city": "Hyderabad",
+      "forecast_date_utc": "2026-11-22 11:00:00",
+      "imd_silam_forecast_aqi": "40",
+      "dominating_pollutant": "O3",
+      "aqi_category_derived": "Good"
+    },
+    {
+      "scraped_at_ist": "2026-11-20 15:30:07",
+      "city": "Kolkata",
+      "forecast_date_utc": "2026-11-20 11:00:00",
+      "imd_silam_forecast_aqi": "261",
       "dominating_pollutant": "PM2_5",
       "aqi_category_derived": "Poor"
     },
     {
-      "scraped_at_ist": "2026-11-19 16:16:07",
-      "city": "Hyderabad",
-      "forecast_date_utc": "2026-11-20 11:00:00",
-      "imd_silam_forecast_aqi": "123",
-      "dominating_pollutant": "PM2_5",
-      "aqi_category_derived": "Moderate"
-    },
-    {
-      "scraped_at_ist": "2026-11-19 16:16:07",
-      "city": "Hyderabad",
-      "forecast_date_utc": "2026-11-21 11:00:00",
-      "imd_silam_forecast_aqi": "122",
-      "dominating_pollutant": "PM2_5",
-      "aqi_category_derived": "Moderate"
-    },
-    {
-      "scraped_at_ist": "2026-11-19 16:16:16",
-      "city": "Kolkata",
-      "forecast_date_utc": "2026-11-19 11:00:00",
-      "imd_silam_forecast_aqi": "290",
-      "dominating_pollutant": "PM2_5",
-      "aqi_category_derived": "Poor"
-    },
-    {
-      "scraped_at_ist": "2026-11-19 16:16:16",
-      "city": "Kolkata",
-      "forecast_date_utc": "2026-11-20 11:00:00",
-      "imd_silam_forecast_aqi": "188",
-      "dominating_pollutant": "PM2_5",
-      "aqi_category_derived": "Moderate"
-    },
-    {
-      "scraped_at_ist": "2026-11-19 16:16:16",
+      "scraped_at_ist": "2026-11-20 15:30:07",
       "city": "Kolkata",
       "forecast_date_utc": "2026-11-21 11:00:00",
-      "imd_silam_forecast_aqi": "572",
+      "imd_silam_forecast_aqi": "1560",
       "dominating_pollutant": "PM2_5",
       "aqi_category_derived": "Severe"
     },
     {
-      "scraped_at_ist": "2026-11-19 16:16:03",
-      "city": "Mumbai",
-      "forecast_date_utc": "2026-11-19 11:00:00",
-      "imd_silam_forecast_aqi": "275",
+      "scraped_at_ist": "2026-11-20 15:30:07",
+      "city": "Kolkata",
+      "forecast_date_utc": "2026-11-22 11:00:00",
+      "imd_silam_forecast_aqi": "920",
       "dominating_pollutant": "PM2_5",
-      "aqi_category_derived": "Poor"
+      "aqi_category_derived": "Severe"
     },
     {
-      "scraped_at_ist": "2026-11-19 16:16:03",
+      "scraped_at_ist": "2026-11-20 15:30:07",
       "city": "Mumbai",
       "forecast_date_utc": "2026-11-20 11:00:00",
-      "imd_silam_forecast_aqi": "220",
+      "imd_silam_forecast_aqi": "238",
       "dominating_pollutant": "PM2_5",
       "aqi_category_derived": "Poor"
     },
     {
-      "scraped_at_ist": "2026-11-19 16:16:03",
+      "scraped_at_ist": "2026-11-20 15:30:07",
       "city": "Mumbai",
       "forecast_date_utc": "2026-11-21 11:00:00",
-      "imd_silam_forecast_aqi": "396",
+      "imd_silam_forecast_aqi": "332",
       "dominating_pollutant": "PM2_5",
       "aqi_category_derived": "Very Poor"
+    },
+    {
+      "scraped_at_ist": "2026-11-20 15:30:07",
+      "city": "Mumbai",
+      "forecast_date_utc": "2026-11-22 11:00:00",
+      "imd_silam_forecast_aqi": "897",
+      "dominating_pollutant": "PM2_5",
+      "aqi_category_derived": "Severe"
     }
   ]
 }
