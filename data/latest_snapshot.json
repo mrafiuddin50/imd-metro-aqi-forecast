@@ -31,14 +31,6 @@
     {
       "scraped_at_ist": "2026-11-20 15:30:07",
       "city": "Chennai",
-      "forecast_date_utc": "2026-11-20 11:00:00",
-      "imd_silam_forecast_aqi": "169",
-      "dominating_pollutant": "PM2_5",
-      "aqi_category_derived": "Moderate"
-    },
-    {
-      "scraped_at_ist": "2026-11-20 15:30:07",
-      "city": "Chennai",
       "forecast_date_utc": "2026-11-21 11:00:00",
       "imd_silam_forecast_aqi": "115",
       "dominating_pollutant": "PM2_5",
@@ -51,14 +43,6 @@
       "imd_silam_forecast_aqi": "35",
       "dominating_pollutant": "O3",
       "aqi_category_derived": "Good"
-    },
-    {
-      "scraped_at_ist": "2026-11-20 15:30:07",
-      "city": "Delhi",
-      "forecast_date_utc": "2026-11-20 11:00:00",
-      "imd_silam_forecast_aqi": "346",
-      "dominating_pollutant": "PM2_5",
-      "aqi_category_derived": "Very Poor"
     },
     {
       "scraped_at_ist": "2026-11-20 15:30:07",
@@ -79,14 +63,6 @@
     {
       "scraped_at_ist": "2026-11-20 15:30:07",
       "city": "Hyderabad",
-      "forecast_date_utc": "2026-11-20 11:00:00",
-      "imd_silam_forecast_aqi": "114",
-      "dominating_pollutant": "PM2_5",
-      "aqi_category_derived": "Moderate"
-    },
-    {
-      "scraped_at_ist": "2026-11-20 15:30:07",
-      "city": "Hyderabad",
       "forecast_date_utc": "2026-11-21 11:00:00",
       "imd_silam_forecast_aqi": "62",
       "dominating_pollutant": "SO2",
@@ -103,14 +79,6 @@
     {
       "scraped_at_ist": "2026-11-20 15:30:07",
       "city": "Kolkata",
-      "forecast_date_utc": "2026-11-20 11:00:00",
-      "imd_silam_forecast_aqi": "261",
-      "dominating_pollutant": "PM2_5",
-      "aqi_category_derived": "Poor"
-    },
-    {
-      "scraped_at_ist": "2026-11-20 15:30:07",
-      "city": "Kolkata",
       "forecast_date_utc": "2026-11-21 11:00:00",
       "imd_silam_forecast_aqi": "1560",
       "dominating_pollutant": "PM2_5",
@@ -123,14 +91,6 @@
       "imd_silam_forecast_aqi": "920",
       "dominating_pollutant": "PM2_5",
       "aqi_category_derived": "Severe"
-    },
-    {
-      "scraped_at_ist": "2026-11-20 15:30:07",
-      "city": "Mumbai",
-      "forecast_date_utc": "2026-11-20 11:00:00",
-      "imd_silam_forecast_aqi": "238",
-      "dominating_pollutant": "PM2_5",
-      "aqi_category_derived": "Poor"
     },
     {
       "scraped_at_ist": "2026-11-20 15:30:07",
